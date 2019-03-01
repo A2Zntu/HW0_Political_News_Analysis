@@ -25,7 +25,7 @@ stopwords = []
 with open('../jieba_data/stopwords.txt', 'r', encoding='UTF-8') as file:
     for each in file.readlines():
         stopwords.append(each.strip())
-    stopwords.append(' ')
+    stopwords.append(' ')  
 
 # with open('crawler/data/new_talk.pkl', 'rb') as f:
 #     data = pickle.load(f)
@@ -58,14 +58,18 @@ def remove_stopwords_from_dict(word_dict, stopwords):
     return word_dict
 
 def lcut_to_dict(lcut):
-    word_dict = dict(Counter(lcut))
+    '''count list of cut words, and transform into dict'''
+    word_dict = dict(Counter(lcut)) #count every word repetition
 #     word_dict.pop(' ')
     return(remove_stopwords_from_dict(word_dict, stopwords))
 
 def sort_dict_by_values(d):
-    return(sorted(d.items(), key=lambda x: x[1], reverse=True))
+    '''sorted the dict by the number of occurrences'''
+    return(sorted(d.items(), key=lambda x: x[1], reverse=True)) #desc
 
 def news_containing_keyword(keyword, news_list):
+    '''fiter the contents contend with the keyword; 
+    e.g. list all the news contain IN-WEN_TSAI'''
     return list(filter(lambda news: keyword in news, news_list))
 
 def data_containing_keyword(keyword, data):
@@ -79,18 +83,19 @@ def news_containing_keywords(keywords, news_list):
     return news
 
 def get_coshow(contents):
+    '''create a dictionary with key equals wcw,  value equals the occurance'''
     coshow_dict = {}
     cat_content = ' '.join(contents)
     clean_content = remove_punctuation(cat_content)
-    cut_content = jieba.lcut(clean_content)
-    cut_content = list(filter(lambda x: x!=' ', cut_content))
+    cut_content = jieba.lcut(clean_content) # return words cut in list
+    cut_content = list(filter(lambda x: x!=' ', cut_content)) # filter ' '
     for i in range(len(cut_content)-1):
         wcw = cut_content[i] + cut_content[i+1]
-    #     print(wcw)
+#         print(wcw)
         try:
-            coshow_dict[wcw] = coshow_dict[wcw] + 1
+            coshow_dict[wcw] = coshow_dict[wcw] + 1 #exist, then add 1
         except:
-            coshow_dict[wcw] = 1
+            coshow_dict[wcw] = 1 #no exist, then set 1
 
     sdbv = sort_dict_by_values(coshow_dict)
     return sdbv
@@ -101,17 +106,19 @@ def get_cutted_dict(list_of_news):
     cutted = jieba.lcut(cat)
     return lcut_to_dict(cutted)
 
-def first_n_words(cutted_dict, n, word_len=2, to=1000):
+def first_n_words(cutted_dict, n, word_len=2, to = 1000):
+    '''filter the word len from 2~1000'''
     sdbv = sort_dict_by_values(cutted_dict)
     return list(filter(lambda x: len(x[0])>=word_len and len(x[0])<=to, sdbv))[:n]
 
 def get_wordcloud_of_keywords(keywords, list_of_news, image_path=False):
+    '''generate the image with mask_colors'''
     if type(keywords) == str:
         keywords = [keywords]
     
     if image_path:
         coloring = np.array(Image.open(os.path.join(image_path)))
-        color_func = ImageColorGenerator(coloring)
+        color_func = ImageColorGenerator(coloring) # scratch the color from origin pic
         wc = WordCloud(max_font_size=30,
                        background_color="white",
                        mask=coloring,
@@ -126,21 +133,22 @@ def get_wordcloud_of_keywords(keywords, list_of_news, image_path=False):
                        font_path=font_path,
                        width=1000, height=300,
                       max_words=1000)
-    
+    # only include the news with keyword
     keyword_news = news_containing_keywords(keywords, list_of_news)
     keyword_dict = get_cutted_dict(keyword_news)
     print(len(keyword_dict))
-    im = wc.generate_from_frequencies(keyword_dict)
+    im = wc.generate_from_frequencies(keyword_dict) 
     return im
 
 def merge_one_day_news_dict(one_day_dict, count='wt', divide = 1):
+
     all_words = set([word for each_dict in one_day_dict for word in each_dict])
     one_day_wf = {}
     for word in all_words:
-        one_day_wf[word] = 0
+        one_day_wf[word] = 0 #initilize every word
         for news in one_day_dict:
             if count == 'wt':
-                one_day_wf[word] += news.get(word, 0)/divide
+                one_day_wf[word] += news.get(word, 0)/divide #find word in dict, if none return 0
             if count == 'occur':
                 one_day_wf[word] += bool(news.get(word, 0))/divide
     
