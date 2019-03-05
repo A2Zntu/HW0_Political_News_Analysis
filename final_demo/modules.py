@@ -57,6 +57,11 @@ def remove_stopwords_from_dict(word_dict, stopwords):
         word_dict.pop(w, word_dict)
     return word_dict
 
+def remove_stopwords_from_list(word_list, stopwords):
+    for w in stopwords:
+        word_list.remove(w)
+    return word_list
+
 def lcut_to_dict(lcut):
     '''count list of cut words, and transform into dict'''
     word_dict = dict(Counter(lcut)) #count every word repetition
@@ -140,18 +145,24 @@ def get_wordcloud_of_keywords(keywords, list_of_news, image_path=False):
     im = wc.generate_from_frequencies(keyword_dict) 
     return im
 
-def merge_one_day_news_dict(one_day_dict, count='wt', divide = 1):
-
+def merge_one_day_news_dict(one_day_dict, count='wt', divide = 1, inverse = False):
+    '''Append a new parameter: inverse, to calculate the idf of a word'''
     all_words = set([word for each_dict in one_day_dict for word in each_dict])
     one_day_wf = {}
     for word in all_words:
         one_day_wf[word] = 0 #initilize every word
-        for news in one_day_dict:
+        for news in one_day_dict: #find word in each new, if none return 0
             if count == 'wt':
-                one_day_wf[word] += news.get(word, 0)/divide #find word in dict, if none return 0
-            if count == 'occur':
-                one_day_wf[word] += bool(news.get(word, 0))/divide
-    
+                one_day_wf[word] += news.get(word, 0)/divide #cal. word reptition
+            elif count == 'occur' and inverse == False:
+                one_day_wf[word] += bool(news.get(word, 0))/divide #cal. word occurrence
+            elif count == 'occur' and inverse == True:
+                one_day_wf[word] += bool(news.get(word, 0))
+        if inverse == True:
+            try:
+                one_day_wf[word] = np.log(divide/one_day_wf[word])
+            except:
+                one_day_wf[word] = 0.0
     return one_day_wf
 
 def plot_line_of_word(word, date_from='2018-06-07', date_to='2019-01-22'):
