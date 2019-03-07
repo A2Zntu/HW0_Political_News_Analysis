@@ -2,7 +2,7 @@
 
 # Intruduction 
 My name is Evan Chiang.  
-I currently study in NTU Finance in master degree.   
+I currently a finance gradute student in NTU.   
 I am a newbee to this code world, but I would try hard to face the challenges.  
 
 ## Installation
@@ -18,20 +18,7 @@ The green boxes represent original functions and procedure.
 The orange boxes represent new functions or procedure.  
 
 # Debug
-```python
-def most_similar(w2v_model, words, topn=10):
-    similar_df = pd.DataFrame()
-    for word in words:
-        try:
-            similar_words = pd.DataFrame(w2v_model.wv.most_similar(word, topn=topn), columns=[word, 'cos'])
-            similar_df = pd.concat([similar_df, similar_words], axis=1)
-        except:
-            print(word, "not found in Word2Vec model!")
-    return similar_df
-```
-```python
-most_similar(w2v_model, ['蔡英文', '韓國瑜', '姚文智', '柯文哲', '高嘉瑜', '九二共識'], 10)
-```
+
 
 # New Function 
 * Word2vec model -- analysis the vector of words
