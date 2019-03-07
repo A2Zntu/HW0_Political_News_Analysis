@@ -21,7 +21,8 @@ The orange boxes represent new functions or procedure.
 
 
 # New Function 
-* Word2vec model -- analysis the vector of words
+* Word2vec model -- analysis the vector of words 
+
   + Using specific words to find similar words
      ```python
     def most_similar(w2v_model, words, topn=10):
@@ -37,6 +38,7 @@ The orange boxes represent new functions or procedure.
     ```python
     most_similar(w2v_model, ['蔡英文', '韓國瑜', '姚文智', '柯文哲', '高嘉瑜', '九二共識'], 10)
     ```
+    ![image](https://github.com/A2Zntu/HW0_Political_News_Analysis/blob/master/politicians/words_similar.JPG)
     
   + Train `TfidfVectorizer` model to classify the new word
 
