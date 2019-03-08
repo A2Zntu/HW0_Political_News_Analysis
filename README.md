@@ -18,7 +18,7 @@ The green boxes represent original functions and procedure.
 The orange boxes represent new functions or procedure.  
 
 # Debug
-
+ Some plots xticks are reversed. Use *dall_date to replace *aall_date 
 
 # New Function 
 * Word2vec model -- analysis the vector of words 
@@ -42,24 +42,24 @@ The orange boxes represent new functions or procedure.
     ![image](https://github.com/A2Zntu/HW0_Political_News_Analysis/blob/master/politicians/words_similar.JPG)
     
   + Coordinate with `ExtraTreesClassifier` to classify words label
-   ```python
+    ```python
        etree_w2v_tfidf = Pipeline([
         ("word2vec vectorizer", TfidfEmbeddingVectorizer(w2v)),
         ("extra trees", ExtraTreesClassifier(n_estimators=200))])
     etree_w2v = Pipeline([
         ("word2vec vectorizer", MeanEmbeddingVectorizer(w2v)),
         ("extra trees", ExtraTreesClassifier(n_estimators=200))])
-   ```
-   ```python 
-   #training data
-    X = np.array([['蔡英文', '柯文哲', '韓國瑜', '賴清德'],
-                    ['九二共識', '一中各表', '兩岸一家親'],
-                                        ['下午', '上午'], 
-                        ['台北', '台中', '高雄', '桃園']])
-    y = np.array(['政客', '兩岸議題', '時間', '地名'])
-    # test data
-    test_x = [['鄧小平'], ['高嘉瑜'], ['中午'], ['宜蘭'], ['王世堅'], ['傍晚'], ['統戰'], ['新竹']]
-    ```
+     ```
+     ```python 
+      #training data
+      X = np.array([['蔡英文', '柯文哲', '韓國瑜', '賴清德'],
+                      ['九二共識', '一中各表', '兩岸一家親'],
+                                          ['下午', '上午'], 
+                          ['台北', '台中', '高雄', '桃園']])
+      y = np.array(['政客', '兩岸議題', '時間', '地名'])
+      # test data
+      test_x = [['鄧小平'], ['高嘉瑜'], ['中午'], ['宜蘭'], ['王世堅'], ['傍晚'], ['統戰'], ['新竹']]
+      ```
     Output
     ![image](https://github.com/A2Zntu/HW0_Political_News_Analysis/blob/master/politicians/ETC.JPG)
 
