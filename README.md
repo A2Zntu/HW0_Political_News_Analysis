@@ -5,7 +5,7 @@ My name is Evan Chiang.
 I currently a finance gradute student in NTU.   
 I am a newbee to this code world, but I would try hard to face the challenges.  
 
-## Installation
+# Installation
 Download the repository
 ```bash
 $ git clone https://github.com/A2Zntu/HW0_Political_News_Analysis.git
@@ -18,7 +18,7 @@ The green boxes represent original functions and procedure.
 The orange boxes represent new functions or procedure.  
 
 # Debug
- Some plots xticks are reversed. Use *dall_date to replace *aall_date 
+ Some plots xticks are reversed. Use **_dall_date_** to replace **_aall_date_**. 
 
 # New Function 
 * Word2vec model -- analysis the vector of words 
